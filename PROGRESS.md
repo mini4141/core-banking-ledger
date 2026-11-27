@@ -16,7 +16,7 @@ Resume point: read this file first, continue at the first unticked item.
 - [x] F6 ops console + Playwright happy path
 - [x] F7 performance tuning (k6 before/after in docs/performance-tuning.md)
 - [x] kind + ArgoCD + Strimzi + kube-prometheus-stack + Elasticsearch/Kibana + Fluent Bit
-- [ ] `scripts/test-all.sh` green, CI green on `main`, proof index complete
+- [x] `scripts/test-all.sh` green, CI green on `main`, proof index complete
 
 ### Phase 1 proof (SPECS §9)
 - [x] `tests/`: JUnit XML (all modules), Playwright, k6 summary

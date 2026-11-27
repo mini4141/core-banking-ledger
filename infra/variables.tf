@@ -15,7 +15,7 @@ variable "kubernetes_version" {
 
 variable "aurora_engine_version" {
   type    = string
-  default = "8.0.mysql_aurora.3.08.2"
+  default = "8.0.mysql_aurora.3.12.0"
 }
 
 variable "deployer_cidr" {
