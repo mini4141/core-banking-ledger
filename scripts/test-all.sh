@@ -23,7 +23,7 @@ echo "==> 3/5 integration test (transfer -> Kafka -> DynamoDB)"
 cp tests/integration/build/test-results/integrationTest/*.xml "$OUT/junit/"
 
 echo "==> 4/5 Playwright (ops console)"
-( cd ops-console && npm ci --no-audit --no-fund && npx playwright install chromium
+( cd ops-console && npm ci --no-audit --no-fund && npx playwright install ${CI:+--with-deps} chromium
   JUNIT_OUT="../$OUT/playwright/junit.xml" npx playwright test )
 rm -rf "$OUT/playwright/html-report" && cp -r ops-console/playwright-report "$OUT/playwright/html-report" 2>/dev/null || true
 
