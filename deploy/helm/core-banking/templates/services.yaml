@@ -1,0 +1,53 @@
+{{- $accountsEnv := printf "%s\n- name: DB_URL\n  value: jdbc:mysql://%s:%v/accounts?createDatabaseIfNotExist=true\n- name: HIKARI_MAX_POOL\n  value: %q\n- name: CACHE_ENABLED\n  value: %q" (include "cb.env.db" .) .Values.db.host .Values.db.port (toString .Values.accounts.hikariMaxPool) (toString .Values.accounts.cacheEnabled) -}}
+{{- $transferEnv := printf "%s\n- name: DB_URL\n  value: jdbc:mysql://%s:%v/transfers?createDatabaseIfNotExist=true\n- name: HIKARI_MAX_POOL\n  value: %q\n- name: KAFKA_BOOTSTRAP\n  value: %s\n- name: ACCOUNTS_BASE_URL\n  value: http://accounts-service:8081" (include "cb.env.db" .) .Values.db.host .Values.db.port (toString .Values.transfer.hikariMaxPool) .Values.kafka.bootstrap -}}
+{{- $auditEnv := printf "- name: KAFKA_BOOTSTRAP\n  value: %s\n- name: AWS_REGION\n  value: %s\n- name: AUDIT_TABLE\n  value: %s" .Values.kafka.bootstrap .Values.dynamodb.region .Values.dynamodb.table -}}
+{{- if .Values.dynamodb.localEnabled }}
+{{- $auditEnv = printf "%s\n- name: DYNAMODB_ENDPOINT\n  value: http://dynamodb-local:8000\n- name: AUDIT_CREATE_TABLE\n  value: \"true\"\n- name: AWS_ACCESS_KEY_ID\n  value: local\n- name: AWS_SECRET_ACCESS_KEY\n  value: local" $auditEnv -}}
+{{- end }}
+{{ include "cb.app" (dict "root" . "name" "accounts-service" "repo" "core-banking/accounts-service" "port" 8081 "replicas" .Values.accounts.replicas "env" $accountsEnv) }}
+---
+{{ include "cb.app" (dict "root" . "name" "transfer-service" "repo" "core-banking/transfer-service" "port" 8082 "replicas" .Values.transfer.replicas "env" $transferEnv) }}
+---
+{{ include "cb.app" (dict "root" . "name" "audit-service" "repo" "core-banking/audit-service" "port" 8083 "replicas" .Values.audit.replicas "env" $auditEnv) }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ops-console
+  labels:
+    app: ops-console
+spec:
+  replicas: {{ .Values.console.replicas }}
+  selector:
+    matchLabels:
+      app: ops-console
+  template:
+    metadata:
+      labels:
+        app: ops-console
+    spec:
+      containers:
+        - name: nginx
+          image: {{ include "cb.image" (dict "root" . "name" .Values.console.image) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - { name: ACCOUNTS_URL, value: "http://accounts-service:8081" }
+            - { name: TRANSFER_URL, value: "http://transfer-service:8082" }
+            - { name: AUDIT_URL, value: "http://audit-service:8083" }
+          ports:
+            - { name: http, containerPort: 80 }
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+          resources:
+            requests: { cpu: 20m, memory: 32Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ops-console
+spec:
+  type: {{ .Values.console.service.type }}
+  selector:
+    app: ops-console
+  ports:
+    - { name: http, port: 80, targetPort: http }

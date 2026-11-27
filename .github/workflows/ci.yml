@@ -1,0 +1,84 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build and unit/WireMock tests
+        run: ./gradlew build --console=plain
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit-xml
+          path: services/*/build/test-results/test/*.xml
+
+  console:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ops-console
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ops-console/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  stack:
+    runs-on: ubuntu-latest
+    needs: [backend, console]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: grafana/setup-k6-action@v1
+      - name: Compose stack, integration test, Playwright and k6 smoke
+        run: ./scripts/test-all.sh --ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stack-test-reports
+          path: proof/phase1-local/tests
+
+  helm-and-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - run: helm lint deploy/helm/core-banking
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform -chdir=infra init -backend=false && terraform -chdir=infra validate
+
+  diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render PlantUML to SVG
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq plantuml graphviz
+          plantuml -tsvg -o ../diagrams-svg docs/diagrams/*.puml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: diagrams-svg
+          path: docs/diagrams-svg

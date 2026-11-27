@@ -1,0 +1,88 @@
+server:
+  port: 8082
+  shutdown: graceful
+
+spring:
+  application:
+    name: transfer-service
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/transfers?createDatabaseIfNotExist=true}
+    username: ${DB_USER:ledger}
+    password: ${DB_PASSWORD:ledger}
+    hikari:
+      maximum-pool-size: ${HIKARI_MAX_POOL:10}
+  jpa:
+    open-in-view: ${JPA_OPEN_IN_VIEW:false}
+    hibernate.ddl-auto: none
+    properties:
+      hibernate.jdbc.batch_size: ${JPA_BATCH_SIZE:25}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    admin.auto-create: ${KAFKA_AUTO_CREATE_TOPIC:true}
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        enable.idempotence: true
+        max.block.ms: 3000
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 1000
+            read-timeout: 1000
+
+accounts:
+  base-url: ${ACCOUNTS_BASE_URL:http://localhost:8081}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      accounts:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        register-health-indicator: true
+        ignore-exceptions:
+          - com.corebanking.transfer.BusinessException
+  retry:
+    instances:
+      accounts:
+        max-attempts: 2
+        wait-duration: 100ms
+        ignore-exceptions:
+          - com.corebanking.transfer.BusinessException
+          - io.github.resilience4j.circuitbreaker.CallNotPermittedException
+  bulkhead:
+    instances:
+      accounts:
+        max-concurrent-calls: 20
+        max-wait-duration: 2s
+  ratelimiter:
+    instances:
+      accounts:
+        limit-for-period: 5000
+        limit-refresh-period: 1s
+        timeout-duration: 500ms
+
+management:
+  endpoints.web.exposure.include: health,info,prometheus,metrics,circuitbreakers,circuitbreakerevents,retries,bulkheads
+  endpoint.health.probes.enabled: true
+  health.circuitbreakers.enabled: true
+  metrics:
+    tags.application: ${spring.application.name}
+    distribution.percentiles-histogram.http.server.requests: true
+  tracing.sampling.probability: 1.0
+
+springdoc:
+  swagger-ui.path: /swagger-ui

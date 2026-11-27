@@ -1,0 +1,183 @@
+name: core-banking
+
+x-app-env: &app-env
+  SPRING_PROFILES_ACTIVE: logstash
+  LOGSTASH_HOST: logstash
+  LOGSTASH_PORT: "5000"
+
+services:
+  mysql:
+    image: mysql:8.4.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ledger
+      MYSQL_PASSWORD: ledger
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports: ["3306:3306"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:7.4.5-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  kafka:
+    image: apache/kafka:3.9.1
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_HEAP_OPTS: -Xmx512m -Xms256m
+    ports: ["29092:29092"]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+
+  dynamodb:
+    image: amazon/dynamodb-local:2.6.1
+    command: ["-jar", "DynamoDBLocal.jar", "-inMemory", "-sharedDb"]
+    ports: ["8000:8000"]
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.4
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports: ["9200:9200"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.17.4
+    environment:
+      LS_JAVA_OPTS: -Xms384m -Xmx384m
+      XPACK_MONITORING_ENABLED: "false"
+    volumes:
+      - ./logstash/pipeline.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    depends_on:
+      elasticsearch: { condition: service_healthy }
+    ports: ["5000:5000"]
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.4
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      NODE_OPTIONS: --max-old-space-size=512
+    depends_on:
+      elasticsearch: { condition: service_healthy }
+    ports: ["5601:5601"]
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml:ro
+    ports: ["9090:9090"]
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports: ["9093:9093"]
+
+  alert-webhook:
+    image: mendhak/http-https-echo:37
+    environment:
+      HTTP_PORT: "8080"
+      DISABLE_REQUEST_LOGS: "false"
+
+  grafana:
+    image: grafana/grafana:11.6.0
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/core-banking.json
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["3001:3000"]
+
+  accounts-service:
+    image: core-banking/accounts-service:0.1.0
+    environment:
+      <<: *app-env
+      DB_URL: jdbc:mysql://mysql:3306/accounts
+      REDIS_HOST: redis
+      HIKARI_MAX_POOL: ${HIKARI_MAX_POOL:-10}
+      CACHE_ENABLED: ${CACHE_ENABLED:-true}
+      JPA_OPEN_IN_VIEW: ${JPA_OPEN_IN_VIEW:-false}
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:-}
+    depends_on:
+      mysql: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      logstash: { condition: service_started }
+    ports: ["8081:8081"]
+
+  transfer-service:
+    image: core-banking/transfer-service:0.1.0
+    environment:
+      <<: *app-env
+      DB_URL: jdbc:mysql://mysql:3306/transfers
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP: kafka:9092
+      ACCOUNTS_BASE_URL: http://accounts-service:8081
+      HIKARI_MAX_POOL: ${HIKARI_MAX_POOL:-10}
+      JPA_OPEN_IN_VIEW: ${JPA_OPEN_IN_VIEW:-false}
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:-}
+    depends_on:
+      mysql: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+      logstash: { condition: service_started }
+    ports: ["8082:8082"]
+
+  audit-service:
+    image: core-banking/audit-service:0.1.0
+    environment:
+      <<: *app-env
+      KAFKA_BOOTSTRAP: kafka:9092
+      DYNAMODB_ENDPOINT: http://dynamodb:8000
+      AUDIT_CREATE_TABLE: "true"
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      AWS_REGION: ap-southeast-2
+    depends_on:
+      kafka: { condition: service_healthy }
+      dynamodb: { condition: service_started }
+      logstash: { condition: service_started }
+    ports: ["8083:8083"]
+
+  ops-console:
+    image: core-banking/ops-console:0.1.0
+    build: ../ops-console
+    depends_on: [accounts-service, transfer-service, audit-service]
+    environment:
+      ACCOUNTS_URL: http://accounts-service:8081
+      TRANSFER_URL: http://transfer-service:8082
+      AUDIT_URL: http://audit-service:8083
+    ports: ["3000:80"]

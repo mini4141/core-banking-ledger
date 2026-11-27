@@ -1,0 +1,12 @@
+# EKS overrides. scripts/deploy.sh passes db.host and image.registry as ArgoCD Helm parameters.
+db:
+  createSecret: false
+mysql:
+  enabled: false
+dynamodb:
+  localEnabled: false
+image:
+  pullPolicy: Always
+console:
+  service:
+    type: LoadBalancer

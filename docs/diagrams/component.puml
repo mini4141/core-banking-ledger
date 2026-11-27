@@ -1,0 +1,37 @@
+@startuml component
+title Core Banking Ledger: components
+package "Kubernetes (kind / EKS) via ArgoCD" {
+  [ops-console (React + nginx)] as UI
+  [transfer-service (Java 21)] as T
+  [accounts-service (Java 21)] as A
+  [audit-service (Kotlin)] as AU
+  database "Redis" as R
+  queue "Kafka (Strimzi)" as K
+  [Fluent Bit] as FB
+  [Prometheus + Alertmanager + Grafana] as PROM
+}
+database "MySQL / Aurora Serverless v2" as DB
+database "DynamoDB" as D
+database "Elasticsearch / OpenSearch" as ES
+[Kibana / Dashboards] as KB
+
+UI --> T : REST
+UI --> A : REST
+UI --> AU : REST
+T --> A : OpenFeign + Resilience4j
+T --> R : idempotency
+A --> R : balance cache
+T --> DB
+A --> DB
+T --> K : TransferCompleted
+K --> AU
+AU --> D
+T ..> FB : JSON logs
+A ..> FB
+AU ..> FB
+FB --> ES
+ES --> KB
+PROM ..> T : /actuator/prometheus
+PROM ..> A
+PROM ..> AU
+@enduml

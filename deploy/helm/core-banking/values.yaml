@@ -1,0 +1,56 @@
+# Defaults target kind (everything in-cluster). values-aws.yaml overrides for EKS.
+image:
+  registry: ""            # e.g. <account>.dkr.ecr.ap-southeast-2.amazonaws.com on EKS
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+db:
+  host: mysql              # Aurora endpoint on EKS (passed by scripts/deploy.sh)
+  port: 3306
+  secretName: ledger-db    # keys: username, password
+  createSecret: true       # kind only: EKS secret is created by deploy.sh from Terraform output
+
+mysql:
+  enabled: true            # in-cluster MySQL for kind only
+
+dynamodb:
+  localEnabled: true       # DynamoDB Local for kind; on EKS the real table is used (Pod Identity)
+  region: ap-southeast-2
+  table: audit_events
+
+kafka:
+  strimzi:
+    enabled: true
+  clusterName: ledger
+  # Strimzi names the bootstrap Service <cluster>-kafka-bootstrap
+  bootstrap: ledger-kafka-bootstrap:9092
+
+redis:
+  image: redis:7.4.5-alpine
+
+accounts:
+  replicas: 1
+  hikariMaxPool: 10
+  cacheEnabled: true
+
+transfer:
+  replicas: 1
+  hikariMaxPool: 10
+
+audit:
+  replicas: 1
+
+console:
+  image: core-banking/ops-console
+  replicas: 1
+  service:
+    type: ClusterIP        # LoadBalancer (NLB) on EKS
+
+javaToolOptions: ""
+
+resources:
+  requests: { cpu: 100m, memory: 384Mi }
+  limits: { memory: 768Mi }
+
+monitoring:
+  enabled: true            # ServiceMonitors + PrometheusRule (needs kube-prometheus-stack CRDs)

@@ -1,0 +1,26 @@
+[versions]
+spring-boot = "3.5.7"
+spring-cloud = "2025.0.0"
+kotlin = "2.1.21"
+dep-mgmt = "1.1.7"
+jib = "3.4.5"
+logstash-encoder = "8.1"
+springdoc = "2.8.13"
+awssdk = "2.31.78"
+wiremock = { module = "org.wiremock:wiremock-standalone", version.ref = "wiremock" }
+testcontainers = "1.21.3"
+awaitility = "4.3.0"
+resilience4j = "2.3.0"
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+dep-mgmt = { id = "io.spring.dependency-management", version.ref = "dep-mgmt" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
+
+[libraries]
+logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-encoder" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+wiremock = { module = "org.wiremock:wiremock-standalone", version.ref = "wiremock" }
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }

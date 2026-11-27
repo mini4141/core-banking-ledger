@@ -1,0 +1,191 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: {{ .Values.redis.image }}
+          args: ["--save", "", "--appendonly", "no"]
+          ports:
+            - containerPort: 6379
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+{{- if .Values.db.createSecret }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.db.secretName }}
+type: Opaque
+stringData:
+  username: ledger
+  password: ledger
+{{- end }}
+{{- if .Values.mysql.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS accounts;
+    CREATE DATABASE IF NOT EXISTS transfers;
+    GRANT ALL PRIVILEGES ON accounts.* TO 'ledger'@'%';
+    GRANT ALL PRIVILEGES ON transfers.* TO 'ledger'@'%';
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.4.6
+          env:
+            - { name: MYSQL_ROOT_PASSWORD, value: root }
+            - { name: MYSQL_USER, value: ledger }
+            - name: MYSQL_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ .Values.db.secretName }}, key: password } }
+          ports:
+            - containerPort: 3306
+          readinessProbe:
+            exec: { command: ["mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"] }
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          volumeMounts:
+            - { name: init, mountPath: /docker-entrypoint-initdb.d }
+          resources:
+            requests: { cpu: 100m, memory: 384Mi }
+      volumes:
+        - name: init
+          configMap: { name: mysql-init }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+{{- end }}
+{{- if .Values.dynamodb.localEnabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynamodb-local
+  labels:
+    app: dynamodb-local
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dynamodb-local
+  template:
+    metadata:
+      labels:
+        app: dynamodb-local
+    spec:
+      containers:
+        - name: dynamodb
+          image: amazon/dynamodb-local:2.6.1
+          args: ["-jar", "DynamoDBLocal.jar", "-inMemory", "-sharedDb"]
+          ports:
+            - containerPort: 8000
+          resources:
+            requests: { cpu: 50m, memory: 256Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dynamodb-local
+spec:
+  selector:
+    app: dynamodb-local
+  ports:
+    - port: 8000
+{{- end }}
+{{- if .Values.kafka.strimzi.enabled }}
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: dual-role
+  labels:
+    strimzi.io/cluster: {{ .Values.kafka.clusterName }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  replicas: 1
+  roles: [controller, broker]
+  storage:
+    type: ephemeral
+  resources:
+    requests: { cpu: 200m, memory: 768Mi }
+    limits: { memory: 1Gi }
+  jvmOptions:
+    "-Xmx": 512m
+    "-Xms": 256m
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: {{ .Values.kafka.clusterName }}
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  kafka:
+    version: 3.9.1
+    metadataVersion: 3.9-IV0
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+{{- end }}

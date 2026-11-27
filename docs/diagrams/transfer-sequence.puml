@@ -1,0 +1,36 @@
+@startuml transfer-sequence
+title Transfer flow (financial-grade orchestration)
+actor Operator
+participant "Ops console" as UI
+participant "transfer-service" as T
+database "Redis" as R
+participant "accounts-service" as A
+database "MySQL / Aurora" as DB
+queue "Kafka\nbanking.transfers" as K
+participant "audit-service (Kotlin)" as AU
+database "DynamoDB" as D
+
+Operator -> UI : submit transfer
+UI -> T : POST /transfers {idempotencyKey, from, to, amount}
+T -> T : validate
+T -> R : SET idem:<key> NX EX 24h
+alt key already present
+  R --> T : result JSON
+  T --> UI : 200 same body (Idempotent-Replayed)
+else first request
+  T -> A : Feign debit(from)  [retry, circuit breaker, bulkhead, 1s timeout]
+  A -> DB : tx: insert leg (UNIQUE transfer_id+leg), update balance (@Version)
+  T -> A : Feign credit(to)
+  alt credit fails
+    T -> A : credit-back(from) (compensation)
+    T --> UI : 503 / error
+  end
+  T -> DB : persist transfer (COMPLETED)
+  T -> K : TransferCompleted (key = transferId)
+  T -> R : SET idem:<key> = result
+  T --> UI : 201 transfer
+end
+K -> AU : consume (manual ack)
+AU -> D : PutItem ACCOUNT#from / ACCOUNT#to
+AU -> K : ack offset
+@enduml

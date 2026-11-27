@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 77.6.2
+    helm:
+      values: |
+        fullnameOverride: kps
+        defaultRules: { create: false }
+        kubeEtcd: { enabled: false }
+        kubeScheduler: { enabled: false }
+        kubeControllerManager: { enabled: false }
+        kubeProxy: { enabled: false }
+        nodeExporter: { enabled: false }
+        grafana:
+          adminPassword: admin
+          sidecar:
+            dashboards: { enabled: true, searchNamespace: ALL, label: grafana_dashboard }
+          resources: { requests: { cpu: 50m, memory: 128Mi } }
+        prometheus:
+          prometheusSpec:
+            scrapeInterval: 5s
+            retention: 6h
+            serviceMonitorSelectorNilUsesHelmValues: false
+            ruleSelectorNilUsesHelmValues: false
+            podMonitorSelectorNilUsesHelmValues: false
+            resources: { requests: { cpu: 100m, memory: 400Mi } }
+        alertmanager:
+          alertmanagerSpec:
+            resources: { requests: { cpu: 20m, memory: 48Mi } }
+          config:
+            route:
+              receiver: webhook-logger
+              group_by: [alertname]
+              group_wait: 5s
+              group_interval: 10s
+              repeat_interval: 1m
+            receivers:
+              - name: webhook-logger
+                webhook_configs:
+                  - url: http://alert-webhook.monitoring.svc:8080/alerts
+                    send_resolved: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]

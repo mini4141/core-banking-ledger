@@ -1,0 +1,25 @@
+# Keep in sync with deploy/helm/core-banking/templates/prometheusrule.yaml
+groups:
+  - name: core-banking
+    rules:
+      - alert: TransferCircuitOpen
+        expr: sum(resilience4j_circuitbreaker_state{application="transfer-service", name="accounts", state=~"open|half_open"}) > 0
+        for: 10s
+        labels: { severity: critical }
+        annotations:
+          summary: "transfer-service circuit breaker to accounts-service is OPEN"
+          runbook: docs/runbooks/TransferCircuitOpen.md
+      - alert: TransferP99High
+        expr: histogram_quantile(0.99, sum by (le) (rate(http_server_requests_seconds_bucket{application="transfer-service", uri="/transfers", method="POST"}[1m]))) > 0.5
+        for: 2m
+        labels: { severity: warning }
+        annotations:
+          summary: "POST /transfers p99 latency above 500 ms"
+          runbook: docs/runbooks/TransferP99High.md
+      - alert: AuditConsumerLag
+        expr: max(kafka_consumer_fetch_manager_records_lag_max{application="audit-service"}) > 100
+        for: 2m
+        labels: { severity: warning }
+        annotations:
+          summary: "audit-service Kafka consumer lag above 100 records"
+          runbook: docs/runbooks/AuditConsumerLag.md

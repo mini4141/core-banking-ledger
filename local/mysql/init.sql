@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS accounts;
+CREATE DATABASE IF NOT EXISTS transfers;
+GRANT ALL PRIVILEGES ON accounts.* TO 'ledger'@'%';
+GRANT ALL PRIVILEGES ON transfers.* TO 'ledger'@'%';

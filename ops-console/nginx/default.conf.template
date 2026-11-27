@@ -1,0 +1,11 @@
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+
+  location / { try_files $uri /index.html; }
+  location /healthz { return 200 'ok'; add_header Content-Type text/plain; }
+
+  location /api/accounts/ { proxy_pass ${ACCOUNTS_URL}/; }
+  location /api/transfer/ { proxy_pass ${TRANSFER_URL}/; }
+  location /api/audit/    { proxy_pass ${AUDIT_URL}/; }
+}
