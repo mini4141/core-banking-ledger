@@ -5,6 +5,15 @@
             <customFields>{"service":"${app}"}</customFields>
         </encoder>
     </appender>
+
+    <!-- Default (Kubernetes): JSON on stdout, collected by Fluent Bit. -->
+    <springProfile name="!logstash">
+        <root level="INFO">
+            <appender-ref ref="JSON"/>
+        </root>
+    </springProfile>
+
+    <!-- Compose: JSON on stdout plus a TCP stream to Logstash. -->
     <springProfile name="logstash">
         <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
             <destination>${LOGSTASH_HOST:-localhost}:${LOGSTASH_PORT:-5000}</destination>
@@ -12,9 +21,9 @@
                 <customFields>{"service":"${app}"}</customFields>
             </encoder>
         </appender>
+        <root level="INFO">
+            <appender-ref ref="JSON"/>
+            <appender-ref ref="LOGSTASH"/>
+        </root>
     </springProfile>
-    <root level="INFO">
-        <appender-ref ref="JSON"/>
-        <springProfile name="logstash"><appender-ref ref="LOGSTASH"/></springProfile>
-    </root>
 </configuration>

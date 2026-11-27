@@ -16,3 +16,5 @@ One line each: date, decision, reason.
 - 2026-11-27 Both transfer-service and audit-service declare topic banking.transfers (3 partitions); the consumer never auto-creates topics, so it cannot end up with a 1-partition topic.
 - 2026-11-27 Executable bit set in git for gradlew and scripts/*.sh (committing from Windows loses it, CI failed with 'Permission denied').
 - 2026-11-27 Found under k6 load: MySQL deadlocks (1213) when a leg insert took the FK shared lock before the balance update. accounts-service now updates the balance first and also retries on ConcurrencyFailureException (deadlock/lock timeout).
+- 2026-11-27 logback-spring.xml: one <root> per Spring profile (nesting <springProfile> in <root> is invalid and left Kubernetes pods, which run without the logstash profile, with no appenders at all).
+- 2026-11-27 Pods set enableServiceLinks=false: Kubernetes service-link env vars (REDIS_PORT=tcp://...) broke Spring property binding.

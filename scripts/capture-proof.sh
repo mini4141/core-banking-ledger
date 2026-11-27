@@ -67,6 +67,31 @@ phase1() {
   echo "phase1 proof captured (ArgoCD/kind screenshots come from scripts/kind-up.sh)"
 }
 
+kind() {
+  local S="$PWD/proof/phase1-local/screenshots" L=proof/phase1-local/logs PIDS=()
+  trap 'for p in "${PIDS[@]:-}"; do kill "$p" 2>/dev/null || true; done' RETURN
+  kubectl -n argocd port-forward svc/argocd-server 18443:443 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n monitoring port-forward svc/kps-grafana 13001:80 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n logging port-forward svc/kibana 15601:5601 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n core-banking port-forward svc/accounts-service 18081:8081 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n core-banking port-forward svc/transfer-service 18082:8082 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n monitoring port-forward svc/kps-alertmanager 19093:9093 >/dev/null 2>&1 & PIDS+=($!)
+  sleep 6
+  ACCOUNTS_URL=http://localhost:18081 ./scripts/seed.sh
+  ids=$(curl -sf localhost:18081/accounts | grep -o '"id":"[^"]*"' | cut -d'"' -f4 | head -2)
+  A=$(echo "$ids" | sed -n 1p); B=$(echo "$ids" | sed -n 2p)
+  for i in $(seq 1 40); do
+    curl -s -o /dev/null -X POST localhost:18082/transfers -H 'Content-Type: application/json'       -d "{\"idempotencyKey\":\"kind-$(date +%s%N)-$i\",\"fromAccountId\":\"$A\",\"toAccountId\":\"$B\",\"amount\":100}"
+  done
+  ARGO_PW=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d)
+  ( cd ops-console && ARGO_PW="$ARGO_PW" OUT="$S/07-argocd-kind.png" node capture/argocd.mjs https://localhost:18443 )
+  ( cd ops-console && node capture/grafana.mjs http://localhost:13001 "$S/08-kind-grafana.png" )
+  shot "http://localhost:15601/app/discover" "$S/09-kind-kibana.png" 8000
+  MODE=k8s ACCOUNTS_URL=http://localhost:18081 TRANSFER_URL=http://localhost:18082 ALERTMANAGER_URL=http://localhost:19093     ./scripts/drill-accounts-down.sh 2>&1 | tee $L/kind-drill-accounts-down.log
+  kubectl -n argocd get applications > $L/kind-argocd-applications.txt
+  kubectl get pods -A > $L/kind-pods.txt
+}
+
 phase2() {
   source scripts/lib-aws.sh
   local P=proof/phase2-cloud S="$PWD/proof/phase2-cloud/screenshots" L=proof/phase2-cloud/logs
@@ -132,6 +157,7 @@ phase2() {
 
 case "$PHASE" in
   phase1) phase1 ;;
+  kind) kind ;;
   phase2) phase2 ;;
   *) echo "unknown phase $PHASE"; exit 1 ;;
 esac

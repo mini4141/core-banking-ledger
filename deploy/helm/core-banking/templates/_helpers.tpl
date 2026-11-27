@@ -26,6 +26,7 @@ spec:
       labels:
         app: {{ .name }}
     spec:
+      enableServiceLinks: false   # a Service called "redis" would inject REDIS_PORT=tcp://..., which Spring tries to bind to an int
       serviceAccountName: {{ .name }}
       containers:
         - name: app

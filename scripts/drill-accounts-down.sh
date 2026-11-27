@@ -30,6 +30,17 @@ scale_accounts() {
   fi
 }
 
+# ArgoCD self-heal would undo the manual scale-down within seconds: pause auto-sync for the drill.
+argocd_autosync() {
+  [ "$MODE" = "k8s" ] || return 0
+  if [ "$1" = off ]; then
+    kubectl -n argocd patch app core-banking --type merge -p '{"spec":{"syncPolicy":{"automated":null}}}' >/dev/null
+  else
+    kubectl -n argocd patch app core-banking --type merge -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}' >/dev/null
+  fi
+}
+trap 'argocd_autosync on' EXIT
+
 ids=$(curl -sf "$ACCOUNTS_URL/accounts" | grep -o '"id":"[^"]*"' | cut -d'"' -f4 | head -2)
 FROM=$(echo "$ids" | sed -n 1p); TO=$(echo "$ids" | sed -n 2p)
 [ -n "$FROM" ] && [ -n "$TO" ] || { echo "need two accounts (run scripts/seed.sh)"; exit 1; }
@@ -43,6 +54,7 @@ send_transfer() {
 say "DRILL START mode=$MODE"
 say "baseline breaker=$(breaker) transfer=$(send_transfer)"
 
+argocd_autosync off
 say "ACTION scale accounts-service to 0"
 scale_accounts 0
 
