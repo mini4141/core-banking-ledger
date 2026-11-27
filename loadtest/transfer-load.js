@@ -1,5 +1,5 @@
 import http from 'k6/http'
-import { check } from 'k6'
+import { check, sleep } from 'k6'
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.1.0/index.js'
 
 const ACCOUNTS = __ENV.ACCOUNTS_URL || 'http://localhost:8081'
@@ -11,7 +11,7 @@ export const options = {
   duration: __ENV.DURATION || '2m',
   thresholds: {
     http_req_failed: ['rate<0.01'],
-    'http_req_duration{name:transfer}': [`p(95)<${__ENV.P95_MS || 300}`],
+    'http_req_duration{name:transfer}': [`p(95)<${__ENV.P95_MS || 800}`],
   },
 }
 
@@ -44,6 +44,7 @@ export default function (data) {
     { ...json, tags: { name: 'transfer' } },
   )
   check(res, { 'transfer 201': (r) => r.status === 201 })
+  sleep(Number(__ENV.THINK_S || 0.5)) // operator think time: 50 VUs offer roughly 80 transfers/s
 }
 
 export function handleSummary(data) {

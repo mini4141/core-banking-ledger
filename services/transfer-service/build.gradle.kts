@@ -44,10 +44,9 @@ tasks.test { useJUnitPlatform() }
 
 jib {
     from { image = "eclipse-temurin:21.0.8_9-jre" }
-    to { image = "core-banking/transfer-service:0.1.0" }
+    to { image = (findProperty("ecrRegistry") as String?)?.let { "$it/core-banking/transfer-service:0.1.0" } ?: "core-banking/transfer-service:0.1.0" }
     container {
         ports = listOf("8082")
-        jvmFlags = listOf("-XX:MaxRAMPercentage=70", "-XX:+UseG1GC", "-XX:+ExitOnOutOfMemoryError")
         creationTime = "USE_CURRENT_TIMESTAMP"
     }
 }

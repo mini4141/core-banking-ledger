@@ -1,0 +1,19 @@
+[11:03:38] DRILL START mode=compose
+[11:03:39] baseline breaker=CLOSED transfer=201 0.127237s
+[11:03:39] ACTION scale accounts-service to 0
+[11:03:43] BREAKER  -> CLOSED (last transfer: 503 2.737991s)
+[11:03:45] BREAKER CLOSED -> OPEN (last transfer: 503 0.134402s)
+[11:03:58] BREAKER OPEN -> HALF_OPEN (last transfer: 503 2.426451s)
+[11:03:59] BREAKER HALF_OPEN -> OPEN (last transfer: 503 0.133658s)
+[11:04:07] ALERT TransferCircuitOpen FIRING
+[11:04:07] fail-fast sample while open: transfer=503 0.011075s
+[11:04:07] ACTION scale accounts-service back to 1
+[11:04:10] BREAKER OPEN -> HALF_OPEN (last transfer: 503 0.146802s)
+[11:04:12] BREAKER HALF_OPEN -> OPEN (last transfer: 503 0.129308s)
+[11:04:23] BREAKER OPEN -> HALF_OPEN (last transfer: 503 0.136671s)
+[11:04:25] BREAKER HALF_OPEN -> OPEN (last transfer: 503 1.133110s)
+[11:04:36] BREAKER OPEN -> HALF_OPEN (last transfer: 201 0.112786s)
+[11:04:38] BREAKER HALF_OPEN -> CLOSED (last transfer: 201 0.109877s)
+[11:04:52] ALERT TransferCircuitOpen RESOLVED
+[11:04:52] recovered: breaker=CLOSED transfer=201 0.097792s
+[11:04:52] DRILL OK

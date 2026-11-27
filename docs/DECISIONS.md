@@ -14,3 +14,5 @@ One line each: date, decision, reason.
 - 2026-11-27 DynamoDB Local runs `-inMemory`; the audit-service creates the table at start-up only when `AUDIT_CREATE_TABLE=true` (local), while Terraform owns it in AWS.
 - 2026-11-27 Hibernate `ddl-auto: none`: Flyway owns the schema; Hibernate validate rejects MySQL DECIMAL vs its NUMERIC mapping.
 - 2026-11-27 Both transfer-service and audit-service declare topic banking.transfers (3 partitions); the consumer never auto-creates topics, so it cannot end up with a 1-partition topic.
+- 2026-11-27 Executable bit set in git for gradlew and scripts/*.sh (committing from Windows loses it, CI failed with 'Permission denied').
+- 2026-11-27 Found under k6 load: MySQL deadlocks (1213) when a leg insert took the FK shared lock before the balance update. accounts-service now updates the balance first and also retries on ConcurrencyFailureException (deadlock/lock timeout).

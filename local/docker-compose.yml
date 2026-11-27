@@ -123,15 +123,17 @@ services:
     ports: ["3001:3000"]
 
   accounts-service:
+    mem_limit: 1536m
+    cpus: 4
     image: core-banking/accounts-service:0.1.0
     environment:
       <<: *app-env
       DB_URL: jdbc:mysql://mysql:3306/accounts
       REDIS_HOST: redis
-      HIKARI_MAX_POOL: ${HIKARI_MAX_POOL:-10}
+      HIKARI_MAX_POOL: ${HIKARI_MAX_POOL:-20}
       CACHE_ENABLED: ${CACHE_ENABLED:-true}
       JPA_OPEN_IN_VIEW: ${JPA_OPEN_IN_VIEW:-false}
-      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:-}
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--XX:MaxRAMPercentage=70 -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError}
     depends_on:
       mysql: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -139,6 +141,8 @@ services:
     ports: ["8081:8081"]
 
   transfer-service:
+    mem_limit: 1536m
+    cpus: 4
     image: core-banking/transfer-service:0.1.0
     environment:
       <<: *app-env
@@ -146,9 +150,9 @@ services:
       REDIS_HOST: redis
       KAFKA_BOOTSTRAP: kafka:9092
       ACCOUNTS_BASE_URL: http://accounts-service:8081
-      HIKARI_MAX_POOL: ${HIKARI_MAX_POOL:-10}
+      HIKARI_MAX_POOL: ${HIKARI_MAX_POOL:-20}
       JPA_OPEN_IN_VIEW: ${JPA_OPEN_IN_VIEW:-false}
-      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:-}
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--XX:MaxRAMPercentage=70 -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError}
     depends_on:
       mysql: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -157,12 +161,15 @@ services:
     ports: ["8082:8082"]
 
   audit-service:
+    mem_limit: 1536m
+    cpus: 4
     image: core-banking/audit-service:0.1.0
     environment:
       <<: *app-env
       KAFKA_BOOTSTRAP: kafka:9092
       DYNAMODB_ENDPOINT: http://dynamodb:8000
       AUDIT_CREATE_TABLE: "true"
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--XX:MaxRAMPercentage=70 -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError}
       AWS_ACCESS_KEY_ID: local
       AWS_SECRET_ACCESS_KEY: local
       AWS_REGION: ap-southeast-2

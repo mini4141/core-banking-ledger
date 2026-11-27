@@ -1,0 +1,6 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="4.944809">
+<testsuite name="transfer.spec.js" timestamp="2026-11-27T11:59:21.156Z" hostname="" tests="1" failures="0" skipped="0" time="2.386" errors="0">
+<testcase name="operator opens two accounts, deposits and transfers money" classname="transfer.spec.js" time="2.386">
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,21 @@
+profile=before HIKARI_MAX_POOL=5 CACHE_ENABLED=false JPA_OPEN_IN_VIEW=true JAVA_TOOL_OPTIONS=-XX:+UseSerialGC -XX:MaxRAMPercentage=50
+     ✓ transfer 201
+
+     checks.........................: 100.00% ✓ 3592      ✗ 0   
+     data_received..................: 2.7 MB  21 kB/s
+     data_sent......................: 1.6 MB  13 kB/s
+     http_req_blocked...............: avg=52.3µs   min=0s      med=0s       max=8.77ms   p(90)=0s     p(95)=0s     
+     http_req_connecting............: avg=38.26µs  min=0s      med=0s       max=8.77ms   p(90)=0s     p(95)=0s     
+     http_req_duration..............: avg=560.84ms min=2.85ms  med=188.91ms max=3.17s    p(90)=1.37s  p(95)=1.64s  
+       { expected_response:true }...: avg=560.84ms min=2.85ms  med=188.91ms max=3.17s    p(90)=1.37s  p(95)=1.64s  
+     ✗ { name:transfer }............: avg=1.11s    min=235.4ms med=1.05s    max=3.17s    p(90)=1.66s  p(95)=1.94s  
+   ✓ http_req_failed................: 0.00%   ✓ 0         ✗ 7584
+     http_req_receiving.............: avg=2.35ms   min=0s      med=568.6µs  max=128.18ms p(90)=6.05ms p(95)=10.84ms
+     http_req_sending...............: avg=38.42µs  min=0s      med=0s       max=10.79ms  p(90)=0s     p(95)=0s     
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s     p(95)=0s     
+     http_req_waiting...............: avg=558.45ms min=2.83ms  med=185.25ms max=3.17s    p(90)=1.37s  p(95)=1.63s  
+     http_reqs......................: 7584    59.355355/s
+     iteration_duration.............: avg=1.68s    min=757.6ms med=1.62s    max=3.89s    p(90)=2.25s  p(95)=2.6s   
+     iterations.....................: 3592    28.112399/s
+     vus............................: 27      min=0       max=50
+     vus_max........................: 50      min=50      max=50

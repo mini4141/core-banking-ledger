@@ -1,0 +1,40 @@
+    },
+    "connection": {},
+    "json": {
+        "receiver": "webhook-logger",
+        "status": "firing",
+        "alerts": [
+            {
+                "status": "firing",
+                "labels": {
+                    "alertname": "TransferCircuitOpen",
+                    "severity": "critical"
+                },
+                "annotations": {
+                    "runbook": "docs/runbooks/TransferCircuitOpen.md",
+                    "summary": "transfer-service circuit breaker to accounts-service is OPEN"
+                },
+                "startsAt": "2026-11-27T12:07:26.156Z",
+                "endsAt": "0001-01-01T00:00:00Z",
+                "generatorURL": "http://025d29a54063:9090/graph?g0.expr=sum%28resilience4j_circuitbreaker_state%7Bapplication%3D%22transfer-service%22%2Cname%3D%22accounts%22%2Cstate%3D~%22open%7Chalf_open%22%7D%29+%3E+0&g0.tab=1",
+                "fingerprint": "56f430674f348f8e"
+            }
+        ],
+        "groupLabels": {
+            "alertname": "TransferCircuitOpen"
+        },
+        "commonLabels": {
+            "alertname": "TransferCircuitOpen",
+            "severity": "critical"
+        },
+        "commonAnnotations": {
+            "runbook": "docs/runbooks/TransferCircuitOpen.md",
+            "summary": "transfer-service circuit breaker to accounts-service is OPEN"
+        },
+        "externalURL": "http://3167f73e982e:9093",
+        "version": "4",
+        "groupKey": "{}:{alertname=\"TransferCircuitOpen\"}",
+        "truncatedAlerts": 0
+    }
+}
+::ffff:172.18.0.4 - - [27/Nov/2026:12:07:35 +0000] "POST /alerts HTTP/1.1" 200 2826 "-" "Alertmanager/0.28.1"

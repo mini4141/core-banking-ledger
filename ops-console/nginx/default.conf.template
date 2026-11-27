@@ -2,10 +2,25 @@ server {
   listen 80;
   root /usr/share/nginx/html;
 
+  # Re-resolve upstreams (compose recreates containers, Kubernetes restarts pods)
+  resolver ${NGINX_LOCAL_RESOLVERS} valid=5s ipv6=off;
+
   location / { try_files $uri /index.html; }
   location /healthz { return 200 'ok'; add_header Content-Type text/plain; }
 
-  location /api/accounts/ { proxy_pass ${ACCOUNTS_URL}/; }
-  location /api/transfer/ { proxy_pass ${TRANSFER_URL}/; }
-  location /api/audit/    { proxy_pass ${AUDIT_URL}/; }
+  location /api/accounts/ {
+    set $upstream ${ACCOUNTS_URL};
+    rewrite ^/api/accounts/(.*)$ /$1 break;
+    proxy_pass $upstream;
+  }
+  location /api/transfer/ {
+    set $upstream ${TRANSFER_URL};
+    rewrite ^/api/transfer/(.*)$ /$1 break;
+    proxy_pass $upstream;
+  }
+  location /api/audit/ {
+    set $upstream ${AUDIT_URL};
+    rewrite ^/api/audit/(.*)$ /$1 break;
+    proxy_pass $upstream;
+  }
 }

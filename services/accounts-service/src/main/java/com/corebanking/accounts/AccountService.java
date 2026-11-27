@@ -6,8 +6,10 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -35,8 +37,10 @@ class AccountService {
         return AccountView.of(saved);
     }
 
+    /** Newest 100 accounts, served by idx_accounts_created_at. */
     List<AccountView> list() {
-        return accounts.findAll().stream().map(AccountView::of).toList();
+        return accounts.findAll(PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "createdAt")))
+                .stream().map(AccountView::of).toList();
     }
 
     AccountView get(String id) {
@@ -81,8 +85,10 @@ class AccountService {
         } else {
             acc.credit(req.amount());
         }
-        legs.saveAndFlush(new AccountLeg(accountId, req.transferId(), req.leg(), req.amount()));
+        // Update the balance first (takes the row's exclusive lock), then insert the leg. The other order
+        // lets the foreign-key check take a shared lock first and two concurrent legs deadlock on the upgrade.
         accounts.saveAndFlush(acc);
+        legs.saveAndFlush(new AccountLeg(accountId, req.transferId(), req.leg(), req.amount()));
         return new LegResult(accountId, acc.getBalance(), true);
     }
 
@@ -90,7 +96,7 @@ class AccountService {
         for (int attempt = 1; ; attempt++) {
             try {
                 return action.get();
-            } catch (ObjectOptimisticLockingFailureException e) {
+            } catch (ConcurrencyFailureException e) {
                 if (attempt >= MAX_LOCK_RETRIES) {
                     throw e;
                 }

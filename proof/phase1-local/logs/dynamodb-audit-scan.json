@@ -1,0 +1,408 @@
+{
+    "Items": [
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:35.075385728Z#0671ef26-7900-43ef-8db4-81bf40181416"
+            },
+            "counterparty": {
+                "S": "a9d1bb3f-f86e-47e9-8a54-77241e82308d"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "0671ef26-7900-43ef-8db4-81bf40181416"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:40.343035199Z#38cde88d-d7a2-4076-827b-490561340803"
+            },
+            "counterparty": {
+                "S": "f950d7c4-e705-433b-a17f-fa287330a7e7"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "38cde88d-d7a2-4076-827b-490561340803"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:49.535897941Z#ae272fde-4f36-4c4c-a3bf-9b519b06e718"
+            },
+            "counterparty": {
+                "S": "16542a74-aa18-46fc-bed8-9b2765fadb0c"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "ae272fde-4f36-4c4c-a3bf-9b519b06e718"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:49.942932594Z#343f161a-d525-4e22-a653-cdee56a7a607"
+            },
+            "counterparty": {
+                "S": "e3d6a4fe-7d62-49c5-89ed-4fe10512e9e0"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "343f161a-d525-4e22-a653-cdee56a7a607"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:52.620656902Z#7d74c54c-82be-4c7b-bb4a-73fb89fd9656"
+            },
+            "counterparty": {
+                "S": "59914e89-dba8-40f4-b994-95c7b70153bd"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "7d74c54c-82be-4c7b-bb4a-73fb89fd9656"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:53.014939711Z#2da988f1-0068-43cb-9684-5b0d69d0fb02"
+            },
+            "counterparty": {
+                "S": "025d3f46-2f91-43b1-967c-512aeba67ec7"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "2da988f1-0068-43cb-9684-5b0d69d0fb02"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:54.375039883Z#cc93d2c3-e3b1-432c-9eaf-addb8b7a6472"
+            },
+            "counterparty": {
+                "S": "a542a678-dcb9-4fb5-9f04-419441d9ad03"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "cc93d2c3-e3b1-432c-9eaf-addb8b7a6472"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:57.000613316Z#bc7665eb-ba12-4d41-a60b-5e228c5c9fd2"
+            },
+            "counterparty": {
+                "S": "69b80d2d-62c1-4b9c-ab60-b418a33c318d"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "bc7665eb-ba12-4d41-a60b-5e228c5c9fd2"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:57.282743939Z#b2ad80ab-0d17-4946-b17b-b636a69de8c3"
+            },
+            "counterparty": {
+                "S": "2199600c-916a-4683-807b-df774cfce68c"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "b2ad80ab-0d17-4946-b17b-b636a69de8c3"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:58.432038487Z#c6869188-7179-4402-a58b-479941c4b6c8"
+            },
+            "counterparty": {
+                "S": "2199600c-916a-4683-807b-df774cfce68c"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "c6869188-7179-4402-a58b-479941c4b6c8"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:58.794484035Z#61194017-ea8a-48ac-8b95-b74c76e7e702"
+            },
+            "counterparty": {
+                "S": "2e80c0a9-0728-475d-9282-c804db6a8f22"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "61194017-ea8a-48ac-8b95-b74c76e7e702"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:37:59.156325074Z#cc048eed-053f-4735-a6bb-c7f2edfc78ad"
+            },
+            "counterparty": {
+                "S": "3d1e6e64-7761-4852-b76e-62453c6d5041"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "cc048eed-053f-4735-a6bb-c7f2edfc78ad"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:02.805045082Z#178dcb5e-49ec-48d6-9a96-06248534b898"
+            },
+            "counterparty": {
+                "S": "7a3c8047-f454-45b3-a67e-6a385cfe9e10"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "178dcb5e-49ec-48d6-9a96-06248534b898"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:05.537896835Z#90588577-810b-476e-a58b-a5ff87af53f2"
+            },
+            "counterparty": {
+                "S": "d0dfe58a-7e60-460b-b9a0-b5f6f808194e"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "90588577-810b-476e-a58b-a5ff87af53f2"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:18.158696609Z#4893c7f4-4b94-4669-a346-2f2159d73484"
+            },
+            "counterparty": {
+                "S": "5cc39c7d-cae5-458f-855d-0bdccb84f4de"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "4893c7f4-4b94-4669-a346-2f2159d73484"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:20.371764479Z#1f2395b6-eb85-47e8-9305-c771f74ee02c"
+            },
+            "counterparty": {
+                "S": "d2d217c1-9cc5-451c-8649-4122f002f638"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "1f2395b6-eb85-47e8-9305-c771f74ee02c"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:21.557031785Z#0fd5e589-d1de-4c77-9b0f-04f07d17f3b7"
+            },
+            "counterparty": {
+                "S": "634960a7-ae5e-42ca-99e7-c02772a0ea75"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "transferId": {
+                "S": "0fd5e589-d1de-4c77-9b0f-04f07d17f3b7"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:25.392698556Z#a6c3997b-fddd-4588-87a3-59a8c15bd1b6"
+            },
+            "counterparty": {
+                "S": "f0728600-3c63-474a-bbac-2619e39be3d8"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "a6c3997b-fddd-4588-87a3-59a8c15bd1b6"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:27.348354125Z#6e331d9e-2129-4d58-80b9-c5612459fc77"
+            },
+            "counterparty": {
+                "S": "59914e89-dba8-40f4-b994-95c7b70153bd"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "6e331d9e-2129-4d58-80b9-c5612459fc77"
+            }
+        },
+        {
+            "SK": {
+                "S": "TS#2026-11-27T11:38:32.547316964Z#66bc5188-6ce7-4f4d-bc2e-e00d0fed37e0"
+            },
+            "counterparty": {
+                "S": "69b80d2d-62c1-4b9c-ab60-b418a33c318d"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#8091b2ba-6384-457f-8844-a7481451af6c"
+            },
+            "type": {
+                "S": "DEBIT"
+            },
+            "transferId": {
+                "S": "66bc5188-6ce7-4f4d-bc2e-e00d0fed37e0"
+            }
+        }
+    ],
+    "Count": 4569,
+    "ScannedCount": 4569,
+    "ConsumedCapacity": null,
+    "NextToken": "eyJFeGNsdXNpdmVTdGFydEtleSI6IG51bGwsICJib3RvX3RydW5jYXRlX2Ftb3VudCI6IDIwfQ=="
+}

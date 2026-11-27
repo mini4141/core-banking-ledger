@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.corebanking.transfer.TransferServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-27T11:46:53.495Z" hostname="DESKTOP-LSTSC86" time="0.307">
+  <properties/>
+  <testcase name="failedCreditIsCompensatedAndNothingIsPublished()" classname="com.corebanking.transfer.TransferServiceTest" time="0.287"/>
+  <testcase name="debitsThenCreditsPersistsAndPublishes()" classname="com.corebanking.transfer.TransferServiceTest" time="0.02"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
