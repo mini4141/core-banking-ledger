@@ -1,0 +1,18 @@
+verify-destroyed 2026-11-27T14:25:47Z  profile=core-banking-ledger-deployer region=ap-southeast-2
+ok: no EKS cluster
+ok: no Aurora cluster
+ok: no Aurora instance
+ok: no OpenSearch domain
+ok: no DynamoDB audit table
+ok: no ECR repositories
+ok: no tagged VPC
+ok: no NAT gateway
+ok: no Elastic IPs
+ok: no EBS volumes
+ok: no EC2 instances
+ok: no load balancers tagged for this project
+ok: no IAM roles with prefix core-banking-ledger
+ok: no EKS log groups
+--- tagging API (Project=core-banking-ledger); each hit is confirmed with a direct call
+ok: tagging API stale entry (resource is gone): arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-0840452e7d2549055
+RESULT: nothing billable remains

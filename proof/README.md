@@ -36,7 +36,27 @@ Every artifact below was produced by a script in `scripts/` (`capture-proof.sh`,
 | `k6-before.txt`, `k6-after.txt` | The tuning exercise: 50 VUs, 2 min, before vs after. Analysis in [docs/performance-tuning.md](../docs/performance-tuning.md). |
 
 ## Phase 2: AWS (EKS), `phase2-cloud/`
-See the end of this file once Phase 2 has run.
+
+Region ap-southeast-2, profile `core-banking-ledger-deployer`. Deployed by `scripts/deploy.sh` (Terraform, ECR via Jib, Argo CD, Helm), exercised by `scripts/cloud-tests.sh`, captured by `scripts/capture-proof.sh phase2`. Stack lifetime: about 1 h 05 min (apply started 13:18 UTC, destroy verified 14:23 UTC).
+
+| File | What it proves |
+|---|---|
+| `screenshots/01-eks-console.png` | The ops console served through the public NLB on EKS, after the Playwright transfer. |
+| `screenshots/02-eks-argocd.png` | Argo CD on EKS: `core-banking`, Strimzi, kube-prometheus-stack, Fluent Bit, alert-webhook all Synced and Healthy. |
+| `screenshots/03-opensearch-dashboards-logs.png` | Amazon OpenSearch Dashboards Discover: JSON logs of accounts, transfer and audit services (with `traceId`) shipped by Fluent Bit using Pod Identity. |
+| `screenshots/04-eks-grafana.png` | Grafana on EKS with the dashboard, showing traffic and the breaker going through its states during the drill. |
+| `logs/eks-drill-accounts-down.log` | The alert drill on EKS: breaker opens, `TransferCircuitOpen` fires, recovery, alert resolves. |
+| `logs/aurora-describe.json` | Aurora MySQL Serverless v2 cluster (0.5 to 2 ACU) as AWS reports it. |
+| `logs/dynamodb-scan.json` | Audit items written to the real DynamoDB table by audit-service. |
+| `resources.txt` | Terraform outputs and describe calls: EKS version and nodes, Aurora, OpenSearch, DynamoDB, ECR, tagged ARNs, pods, Argo CD apps. |
+| `tests/playwright-eks/` | Playwright happy path against the NLB (JUnit XML, output, screenshots). |
+| `tests/k6-eks.txt`, `tests/smoke.txt` | k6 (20 VUs, 30 s through `kubectl port-forward`, so latency is dominated by the tunnel) and the health smoke test. |
 
 ## Phase 3: destroy, `phase3-destroy/`
-See the end of this file once Phase 3 has run.
+
+| File | What it proves |
+|---|---|
+| `destroy.log` | `scripts/destroy.sh`: Argo CD applications deleted with cascade, load balancer gone, ECR emptied, `terraform destroy` of 68 resources including the OpenSearch domain. |
+| `verify-destroyed.txt` | `scripts/verify-destroyed.sh` exits 0: no EKS, Aurora, OpenSearch, DynamoDB, ECR, VPC, NAT, Elastic IP, EBS, EC2, load balancer, IAM role or log group left; the one tagging-API entry is a deleted security group, confirmed gone by a direct call. |
+
+The first verification run failed on an empty VPC left by an aborted Terraform run (details in `docs/DECISIONS.md`); it was removed, `destroy.sh` now sweeps such leftovers, and the verification above is the clean re-run.

@@ -47,31 +47,31 @@ Resume point: read this file first, continue at the first unticked item.
 - [x] tests/k6-eks.txt
 
 ## Phase 3: destroy
-- [ ] `scripts/destroy.sh` run
-- [ ] `scripts/verify-destroyed.sh` exits 0, output in proof/phase3-destroy/verify-destroyed.txt
+- [x] `scripts/destroy.sh` run
+- [x] `scripts/verify-destroyed.sh` exits 0, output in proof/phase3-destroy/verify-destroyed.txt
 
 ## Phase 4: write-up
-- [ ] docs/PORTFOLIO.md
-- [ ] README.md final, everything pushed
+- [x] docs/PORTFOLIO.md
+- [x] README.md final, everything pushed
 
 ## Requirement coverage matrix (SPECS §2)
-- [ ] Backend in Java/Kotlin for core banking: Java services + Kotlin audit
-- [ ] Performance/stability: Resilience4j, optimistic locking, idempotency, tuning doc
-- [ ] Infra solves system challenges: Redis cache/idempotency, Kafka, Aurora Serverless, OpenSearch
-- [ ] Architecture + middleware selection: docs/adr/*
-- [ ] Tuning, monitoring, alert response: tuning doc, Prometheus rules, runbooks, drill
-- [ ] Spring Boot, JUnit, Resilience4j, Feign
-- [ ] MySQL/Aurora, DynamoDB, ELK, Kafka, Redis
-- [ ] Docker, Kubernetes, ArgoCD, AWS
-- [ ] GitHub, Gradle, npm, Flyway
-- [ ] PlantUML diagrams (SVG)
-- [ ] DB schema design (RDB + NoSQL)
-- [ ] Security considerations
-- [ ] REST, Pub/Sub, DB clients
+- [x] Backend in Java/Kotlin for core banking: Java services + Kotlin audit
+- [x] Performance/stability: Resilience4j, optimistic locking, idempotency, tuning doc
+- [x] Infra solves system challenges: Redis cache/idempotency, Kafka, Aurora Serverless, OpenSearch
+- [x] Architecture + middleware selection: docs/adr/*
+- [x] Tuning, monitoring, alert response: tuning doc, Prometheus rules, runbooks, drill
+- [x] Spring Boot, JUnit, Resilience4j, Feign
+- [x] MySQL/Aurora, DynamoDB, ELK, Kafka, Redis
+- [x] Docker, Kubernetes, ArgoCD, AWS
+- [x] GitHub, Gradle, npm, Flyway
+- [x] PlantUML diagrams (SVG)
+- [x] DB schema design (RDB + NoSQL)
+- [x] Security considerations
+- [x] REST, Pub/Sub, DB clients
 
 ## Definition of done (CLAUDE.md §12)
-- [ ] Every stack item in §2 used in running code
-- [ ] Phase 1 proof complete, tests green locally and in CI
-- [ ] Phase 2 proof complete
-- [ ] Phase 3: everything destroyed, verify-destroyed.txt clean
-- [ ] PORTFOLIO.md and README.md written, everything pushed
+- [x] Every stack item in §2 used in running code
+- [x] Phase 1 proof complete, tests green locally and in CI
+- [x] Phase 2 proof complete
+- [x] Phase 3: everything destroyed, verify-destroyed.txt clean
+- [x] PORTFOLIO.md and README.md written, everything pushed

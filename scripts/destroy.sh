@@ -40,4 +40,10 @@ tf init -input=false >/dev/null
 tf destroy -auto-approve -input=false -var "deployer_cidr=0.0.0.0/32"
 rc=$?
 echo "terraform destroy exit code: $rc"
+
+# An aborted terraform run can leave an empty VPC that was never written to state: remove tagged leftovers.
+for v in $(aws ec2 describe-vpcs --filters Name=tag:Project,Values=core-banking-ledger --query 'Vpcs[].VpcId' --output text 2>/dev/null); do
+  echo "removing leftover VPC $v"
+  aws ec2 delete-vpc --vpc-id "$v" 2>&1 | tail -1
+done
 exit $rc
