@@ -41,6 +41,7 @@ spec:
               group_wait: 5s
               group_interval: 10s
               repeat_interval: 1m
+              routes: []
             receivers:
               - name: webhook-logger
                 webhook_configs:

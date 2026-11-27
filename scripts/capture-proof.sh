@@ -67,16 +67,28 @@ phase1() {
   echo "phase1 proof captured (ArgoCD/kind screenshots come from scripts/kind-up.sh)"
 }
 
+kind_kibana() {
+  local S="$PWD/proof/phase1-local/screenshots"
+  kubectl -n logging port-forward svc/kibana 15601:5601 >/dev/null 2>&1 & local pf=$!
+  until curl -sf localhost:15601/api/status >/dev/null; do sleep 3; done
+  curl -s -X POST localhost:15601/api/data_views/data_view -H 'kbn-xsrf: true' -H 'Content-Type: application/json'     -d '{"data_view":{"id":"core-banking","title":"core-banking-*","name":"core-banking-*","timeFieldName":"@timestamp"}}' >/dev/null || true
+  local TRACE
+  TRACE=$(kubectl -n logging exec deploy/elasticsearch -- curl -s 'localhost:9200/core-banking-*/_search' -H 'Content-Type: application/json'     -d '{"size":1,"sort":[{"@timestamp":"desc"}],"query":{"match_phrase":{"message":"transfer completed"}}}' | grep -o '"traceId":"[a-f0-9]*"' | head -1 | cut -d'"' -f4)
+  echo "kind trace: $TRACE"
+  shot "http://localhost:15601/app/discover#/?_a=(columns:!(service,level,message,traceId),dataSource:(dataViewId:core-banking,type:dataView),query:(language:kuery,query:'traceId:\"$TRACE\"'),sort:!(!('@timestamp',asc)))&_g=(time:(from:now-3h,to:now))" "$S/09-kind-kibana.png" 8000
+  kill $pf 2>/dev/null || true
+}
+
 kind() {
   local S="$PWD/proof/phase1-local/screenshots" L=proof/phase1-local/logs PIDS=()
   trap 'for p in "${PIDS[@]:-}"; do kill "$p" 2>/dev/null || true; done' RETURN
   kubectl -n argocd port-forward svc/argocd-server 18443:443 >/dev/null 2>&1 & PIDS+=($!)
-  kubectl -n monitoring port-forward svc/kps-grafana 13001:80 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 13001:80 >/dev/null 2>&1 & PIDS+=($!)
   kubectl -n logging port-forward svc/kibana 15601:5601 >/dev/null 2>&1 & PIDS+=($!)
   kubectl -n core-banking port-forward svc/accounts-service 18081:8081 >/dev/null 2>&1 & PIDS+=($!)
   kubectl -n core-banking port-forward svc/transfer-service 18082:8082 >/dev/null 2>&1 & PIDS+=($!)
   kubectl -n monitoring port-forward svc/kps-alertmanager 19093:9093 >/dev/null 2>&1 & PIDS+=($!)
-  sleep 6
+  for u in 18081 18082; do until curl -sf localhost:$u/actuator/health >/dev/null; do sleep 2; done; done
   ACCOUNTS_URL=http://localhost:18081 ./scripts/seed.sh
   ids=$(curl -sf localhost:18081/accounts | grep -o '"id":"[^"]*"' | cut -d'"' -f4 | head -2)
   A=$(echo "$ids" | sed -n 1p); B=$(echo "$ids" | sed -n 2p)
@@ -86,7 +98,7 @@ kind() {
   ARGO_PW=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d)
   ( cd ops-console && ARGO_PW="$ARGO_PW" OUT="$S/07-argocd-kind.png" node capture/argocd.mjs https://localhost:18443 )
   ( cd ops-console && node capture/grafana.mjs http://localhost:13001 "$S/08-kind-grafana.png" )
-  shot "http://localhost:15601/app/discover" "$S/09-kind-kibana.png" 8000
+  kind_kibana
   MODE=k8s ACCOUNTS_URL=http://localhost:18081 TRANSFER_URL=http://localhost:18082 ALERTMANAGER_URL=http://localhost:19093     ./scripts/drill-accounts-down.sh 2>&1 | tee $L/kind-drill-accounts-down.log
   kubectl -n argocd get applications > $L/kind-argocd-applications.txt
   kubectl get pods -A > $L/kind-pods.txt
@@ -99,7 +111,7 @@ phase2() {
   local PIDS=()
   trap 'for p in "${PIDS[@]:-}"; do kill "$p" 2>/dev/null || true; done' RETURN
   kubectl -n argocd port-forward svc/argocd-server 18443:443 >/dev/null 2>&1 & PIDS+=($!)
-  kubectl -n monitoring port-forward svc/kps-grafana 13001:80 >/dev/null 2>&1 & PIDS+=($!)
+  kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 13001:80 >/dev/null 2>&1 & PIDS+=($!)
   kubectl -n core-banking port-forward svc/accounts-service 18081:8081 >/dev/null 2>&1 & PIDS+=($!)
   kubectl -n core-banking port-forward svc/transfer-service 18082:8082 >/dev/null 2>&1 & PIDS+=($!)
   sleep 5
@@ -142,7 +154,7 @@ phase2() {
     import('@playwright/test').then(async ({chromium}) => {
       const b = await chromium.launch(); const c = await b.newContext({ignoreHTTPSErrors:true, viewport:{width:1440,height:900}});
       const p = await c.newPage(); await p.goto('https://localhost:18443/login');
-      await p.getByPlaceholder('Username').fill('admin'); await p.getByPlaceholder('Password').fill(process.env.ARGO_PW);
+      await p.locator('input.argo-field').first().fill('admin'); await p.locator('input[type=password]').fill(process.env.ARGO_PW);
       await p.getByRole('button',{name:'Sign In'}).click(); await p.waitForURL('**/applications**'); await p.waitForTimeout(6000);
       await p.screenshot({path:process.env.OUT}); await b.close(); })" )
   ( cd ops-console && OUT="$S/04-eks-grafana.png" node -e "
@@ -158,6 +170,7 @@ phase2() {
 case "$PHASE" in
   phase1) phase1 ;;
   kind) kind ;;
+  kind-kibana) kind_kibana ;;
   phase2) phase2 ;;
   *) echo "unknown phase $PHASE"; exit 1 ;;
 esac

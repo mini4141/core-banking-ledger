@@ -1,0 +1,35 @@
+NAMESPACE            NAME                                                        READY   STATUS    RESTARTS      AGE
+argocd               argocd-application-controller-0                             1/1     Running   0             54m
+argocd               argocd-applicationset-controller-7dcb76f859-xfnvh           1/1     Running   0             54m
+argocd               argocd-dex-server-5b849f66c7-79lml                          1/1     Running   0             54m
+argocd               argocd-notifications-controller-7976cfc8b8-pzj44            1/1     Running   0             54m
+argocd               argocd-redis-6544b975c5-86tt2                               1/1     Running   0             54m
+argocd               argocd-repo-server-675b49c78b-4l9tw                         1/1     Running   0             54m
+argocd               argocd-server-59c68dfbcf-bw8zb                              1/1     Running   0             54m
+core-banking         accounts-service-75767dff74-pbqjv                           1/1     Running   0             91s
+core-banking         audit-service-797cb6764c-cczr2                              1/1     Running   0             18m
+core-banking         dynamodb-local-575544f8cc-rszpx                             1/1     Running   0             53m
+core-banking         ledger-dual-role-0                                          1/1     Running   0             39m
+core-banking         mysql-799df44d8-glb2w                                       1/1     Running   0             53m
+core-banking         ops-console-6b5c8bcbcf-drqgz                                1/1     Running   0             53m
+core-banking         redis-77496b8b97-jw5h8                                      1/1     Running   0             53m
+core-banking         transfer-service-6fc4667549-225t4                           1/1     Running   0             18m
+kube-system          coredns-559f6c778d-2wcqr                                    1/1     Running   0             58m
+kube-system          coredns-559f6c778d-bsf6c                                    1/1     Running   0             58m
+kube-system          etcd-core-banking-control-plane                             1/1     Running   0             58m
+kube-system          kindnet-c7frl                                               1/1     Running   0             58m
+kube-system          kube-apiserver-core-banking-control-plane                   1/1     Running   0             58m
+kube-system          kube-controller-manager-core-banking-control-plane          1/1     Running   6 (35m ago)   58m
+kube-system          kube-proxy-hl57v                                            1/1     Running   0             58m
+kube-system          kube-scheduler-core-banking-control-plane                   1/1     Running   6 (35m ago)   58m
+local-path-storage   local-path-provisioner-75f7fc7dc5-hrgj9                     1/1     Running   0             58m
+logging              elasticsearch-6648bc4655-x6jc8                              1/1     Running   0             53m
+logging              fluent-bit-t7v78                                            1/1     Running   0             53m
+logging              kibana-5dc7b7665d-7qxbq                                     1/1     Running   0             53m
+monitoring           alert-webhook-66598b9dc4-c5w4j                              1/1     Running   0             53m
+monitoring           alertmanager-kps-alertmanager-0                             2/2     Running   0             4m52s
+monitoring           kps-operator-6c89f7649b-rgzfk                               1/1     Running   0             39m
+monitoring           kube-prometheus-stack-grafana-756dcf4db6-qhxfm              3/3     Running   0             39m
+monitoring           kube-prometheus-stack-kube-state-metrics-6585d4d5df-gzb7g   1/1     Running   1 (35m ago)   39m
+monitoring           prometheus-kps-prometheus-0                                 2/2     Running   0             35m
+strimzi              strimzi-cluster-operator-564547b569-qf4hf                   1/1     Running   2 (34m ago)   52m

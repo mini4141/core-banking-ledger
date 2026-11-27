@@ -1,0 +1,7 @@
+NAME                    SYNC STATUS   HEALTH STATUS
+alert-webhook           Synced        Healthy
+core-banking            Synced        Healthy
+elk                     Synced        Healthy
+fluent-bit              Synced        Healthy
+kube-prometheus-stack   Synced        Healthy
+strimzi                 Synced        Healthy
