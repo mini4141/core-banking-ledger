@@ -1,0 +1,22 @@
+[13:46:46] DRILL START mode=k8s
+[13:46:49] baseline breaker=CLOSED transfer=201 1.267136s
+[13:46:53] ACTION scale accounts-service to 0
+[13:46:59] BREAKER  -> CLOSED (last transfer: 503 1.329829s)
+[13:47:04] BREAKER CLOSED -> OPEN (last transfer: 503 1.346702s)
+[13:47:14] BREAKER OPEN -> HALF_OPEN (last transfer: 503 1.298883s)
+[13:47:19] BREAKER HALF_OPEN -> OPEN (last transfer: 503 1.310287s)
+[13:47:29] BREAKER OPEN -> HALF_OPEN (last transfer: 503 1.336728s)
+[13:47:35] BREAKER HALF_OPEN -> OPEN (last transfer: 503 1.307879s)
+[13:47:45] BREAKER OPEN -> HALF_OPEN (last transfer: 503 1.414723s)
+[13:47:51] BREAKER HALF_OPEN -> OPEN (last transfer: 503 1.372603s)
+[13:47:57] ALERT TransferCircuitOpen FIRING
+[13:47:58] fail-fast sample while open: transfer=503 1.276337s
+[13:47:58] ACTION scale accounts-service back to 1
+[13:48:04] BREAKER OPEN -> HALF_OPEN (last transfer: 503 1.307766s)
+[13:48:08] BREAKER HALF_OPEN -> OPEN (last transfer: 503 1.370149s)
+[13:48:20] BREAKER OPEN -> HALF_OPEN (last transfer: 503 1.371465s)
+[13:48:24] BREAKER HALF_OPEN -> OPEN (last transfer: 503 1.469203s)
+[13:48:36] BREAKER OPEN -> CLOSED (last transfer: 201 2.592258s)
+[13:48:59] ALERT TransferCircuitOpen RESOLVED
+[13:49:02] recovered: breaker=CLOSED transfer=201 1.301533s
+[13:49:02] DRILL OK

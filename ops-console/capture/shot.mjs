@@ -7,12 +7,19 @@ const args = process.argv.slice(2)
 const textIdx = args.indexOf('--text')
 const waitFor = textIdx >= 0 ? args[textIdx + 1] : null
 const full = args.includes('--full')
+const warmIdx = args.indexOf('--warm')
+const warmUrl = warmIdx >= 0 ? args[warmIdx + 1] : null
 const waitMs = Number(waitArg) || 2000
 
 const browser = await chromium.launch()
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, ignoreHTTPSErrors: true })
 const page = await context.newPage()
-await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
+if (warmUrl) {
+  // heavy single-page apps (OpenSearch Dashboards): load once so the JS bundles are cached
+  await page.goto(warmUrl, { waitUntil: 'load', timeout: 90000 })
+  await page.waitForTimeout(10000)
+}
+await page.goto(url, { waitUntil: 'load', timeout: 90000 })
 if (waitFor) await page.getByText(waitFor).first().waitFor({ timeout: 60000 })
 await page.waitForTimeout(waitMs)
 for (const label of ['Dismiss', 'Close']) {

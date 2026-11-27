@@ -1,44 +1,6 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="13.696795">
-<testsuite name="transfer.spec.js" timestamp="2026-11-27T13:41:20.196Z" hostname="" tests="1" failures="1" skipped="0" time="10.667" errors="0">
-<testcase name="operator opens two accounts, deposits and transfers money" classname="transfer.spec.js" time="10.667">
-<failure message="transfer.spec.js:2:1 operator opens two accounts, deposits and transfers money" type="FAILURE">
-<![CDATA[  transfer.spec.js:2:1 › operator opens two accounts, deposits and transfers money ─────────────────
-
-    Error: expect(locator).toBeVisible() failed
-
-    Locator:  getByTestId('account-Alice-883292')
-    Expected: visible
-    Received: <element(s) not found>
-    Timeout:  5000ms
-
-    Call log:
-      - Expect "toBeVisible" with timeout 5000ms
-      - waiting for getByTestId('account-Alice-883292')
-
-
-      10 |     await page.getByLabel('Customer name').fill(name)
-      11 |     await page.getByRole('button', { name: 'Open account' }).click()
-    > 12 |     await expect(page.getByTestId(`account-${name}`)).toBeVisible()
-         |                                                       ^
-      13 |   }
-      14 |   await page.getByLabel(`Deposit amount for ${alice}`).fill('50000')
-      15 |   await page.getByTestId(`account-${alice}`).getByRole('button', { name: 'Deposit' }).click()
-        at C:\Users\ThinkPad\Pictures\mmvie-v2\reqs\13-core-banking-ledger\ops-console\e2e\transfer.spec.js:12:55
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\transfer-operator-opens-tw-9aee1-eposits-and-transfers-money\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\test-results\transfer-operator-opens-tw-9aee1-eposits-and-transfers-money\error-context.md
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|..\..\..\..\ops-console\test-results\transfer-operator-opens-tw-9aee1-eposits-and-transfers-money\test-failed-1.png]]
-
-[[ATTACHMENT|..\..\..\..\ops-console\test-results\transfer-operator-opens-tw-9aee1-eposits-and-transfers-money\error-context.md]]
-]]>
-</system-out>
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="12.626199">
+<testsuite name="transfer.spec.js" timestamp="2026-11-27T13:45:31.146Z" hostname="" tests="1" failures="0" skipped="0" time="10.506" errors="0">
+<testcase name="operator opens two accounts, deposits and transfers money" classname="transfer.spec.js" time="10.506">
 </testcase>
 </testsuite>
 </testsuites>

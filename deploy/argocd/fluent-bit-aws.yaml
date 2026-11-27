@@ -42,6 +42,7 @@ spec:
                 Logstash_Prefix     core-banking
                 Suppress_Type_Name  On
                 Replace_Dots        On
+                Trace_Error         On
   destination:
     server: https://kubernetes.default.svc
     namespace: logging

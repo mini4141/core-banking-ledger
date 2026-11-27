@@ -142,11 +142,19 @@ phase2() {
     echo; echo "## Pods"; kubectl get pods -A
   } 2>&1 | redact > $P/resources.txt
 
-  echo "== OpenSearch Dashboards: index pattern + Discover"
-  curl -s -X POST "https://$OS/_dashboards/api/saved_objects/index-pattern/core-banking?overwrite=true" -H 'osd-xsrf: true' -H 'Content-Type: application/json' \
-    -d '{"attributes":{"title":"core-banking-*","timeFieldName":"@timestamp"}}' >/dev/null || true
-  shot "https://$OS/_dashboards/app/data-explorer/discover#?_a=(discover:(columns:!(service,level,message,traceId),sort:!()),metadata:(indexPattern:core-banking,view:discover))&_g=(time:(from:now-1h,to:now))&_q=(query:(language:kuery,query:'service:*'))" \
-    "$S/03-opensearch-dashboards-logs.png" 10000
+  echo "== OpenSearch Dashboards: index pattern (with fields) + Discover"
+  python - "$OS" <<'PY'
+import sys, json, urllib.request, urllib.parse
+base = f"https://{sys.argv[1]}/_dashboards"
+def call(method, path, body=None):
+    req = urllib.request.Request(base + path, method=method, data=json.dumps(body).encode() if body else None,
+                                 headers={"osd-xsrf": "true", "Content-Type": "application/json"})
+    return json.load(urllib.request.urlopen(req, timeout=60))
+fields = call("GET", "/api/index_patterns/_fields_for_wildcard?pattern=" + urllib.parse.quote("core-banking-*"))["fields"]
+call("POST", "/api/saved_objects/index-pattern/core-banking?overwrite=true",
+     {"attributes": {"title": "core-banking-*", "timeFieldName": "@timestamp", "fields": json.dumps(fields)}})
+PY
+  shot "https://$OS/_dashboards/app/data-explorer/discover#?_a=(discover:(columns:!(service,level,message,traceId),sort:!()),metadata:(indexPattern:core-banking,view:discover))&_g=(time:(from:now-3h,to:now))&_q=(query:(language:kuery,query:'service:*'))"     "$S/03-opensearch-dashboards-logs.png" 60000 --warm "https://$OS/_dashboards/app/home"
 
   echo "== Argo CD and Grafana"
   ARGO_PW=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d)

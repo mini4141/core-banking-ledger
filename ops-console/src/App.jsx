@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { api, yen } from './api.js'
+import { api, uuid, yen } from './api.js'
 
 const PAGES = ['Accounts', 'Transfer', 'Transfers', 'Audit', 'System']
 
@@ -92,7 +92,7 @@ function TransferForm() {
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [amount, setAmount] = useState('10000')
-  const [key, setKey] = useState(() => crypto.randomUUID())
+  const [key, setKey] = useState(() => uuid())
   const [result, setResult] = useState(null)
 
   const submit = async (e) => {
@@ -124,7 +124,7 @@ function TransferForm() {
         </label>
         <div className="row">
           <button type="submit">Send transfer</button>
-          <button type="button" onClick={() => setKey(crypto.randomUUID())}>New key</button>
+          <button type="button" onClick={() => setKey(uuid())}>New key</button>
         </div>
       </form>
       {result && (

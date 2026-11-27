@@ -33,18 +33,18 @@ Resume point: read this file first, continue at the first unticked item.
 - [x] docs/performance-tuning.md (with numbers)
 
 ## Phase 2: AWS showcase (profile core-banking-ledger-deployer, ap-southeast-2)
-- [ ] `aws sts get-caller-identity` OK
-- [ ] terraform apply, images in ECR, ArgoCD + platform apps, core-banking Healthy
-- [ ] screenshots/01-eks-console.png
-- [ ] screenshots/02-eks-argocd.png
-- [ ] screenshots/03-opensearch-dashboards-logs.png
-- [ ] screenshots/04-eks-grafana.png
-- [ ] logs/eks-drill-accounts-down.log
-- [ ] logs/aurora-describe.json
-- [ ] logs/dynamodb-scan.json
-- [ ] resources.txt
-- [ ] tests/playwright-eks/
-- [ ] tests/k6-eks.txt
+- [x] `aws sts get-caller-identity` OK
+- [x] terraform apply, images in ECR, ArgoCD + platform apps, core-banking Healthy
+- [x] screenshots/01-eks-console.png
+- [x] screenshots/02-eks-argocd.png
+- [x] screenshots/03-opensearch-dashboards-logs.png
+- [x] screenshots/04-eks-grafana.png
+- [x] logs/eks-drill-accounts-down.log
+- [x] logs/aurora-describe.json
+- [x] logs/dynamodb-scan.json
+- [x] resources.txt
+- [x] tests/playwright-eks/
+- [x] tests/k6-eks.txt
 
 ## Phase 3: destroy
 - [ ] `scripts/destroy.sh` run

@@ -1,0 +1,134 @@
+# Deployed AWS resources (Terraform outputs, describe calls)
+aurora_cluster_id = "core-banking-ledger"
+aurora_endpoint = "core-banking-ledger.cluster-cvwcmoea0n62.ap-southeast-2.rds.amazonaws.com"
+cluster_name = "core-banking-ledger"
+dynamodb_table = "audit_events"
+ecr_registry = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com"
+fluent_bit_role_arn = "arn:aws:iam::<ACCOUNT_ID>:role/core-banking-ledger-fluent-bit"
+opensearch_domain = "core-banking-ledger"
+opensearch_endpoint = "search-core-banking-ledger-rkftexq76bv6jkyocnoqql3zda.ap-southeast-2.es.amazonaws.com"
+region = "ap-southeast-2"
+
+## EKS
+{
+    "name": "core-banking-ledger",
+    "version": "1.34",
+    "status": "ACTIVE"
+}
+
+## Nodes
+NAME                                             STATUS   ROLES    AGE   VERSION                INTERNAL-IP   EXTERNAL-IP    OS-IMAGE                        KERNEL-VERSION                     CONTAINER-RUNTIME
+ip-10-20-0-9.ap-southeast-2.compute.internal     Ready    <none>   19m   v1.34.12-eks-9adbfea   10.20.0.9     13.239.24.56   Amazon Linux 2023.12.20261118   6.12.115-140.210.amzn2023.x86_64   containerd://2.3.7+unknown
+ip-10-20-1-220.ap-southeast-2.compute.internal   Ready    <none>   19m   v1.34.12-eks-9adbfea   10.20.1.220   3.26.214.95    Amazon Linux 2023.12.20261118   6.12.115-140.210.amzn2023.x86_64   containerd://2.3.7+unknown
+
+## Aurora
+{
+    "engine": "aurora-mysql",
+    "version": "8.0.mysql_aurora.3.12.0",
+    "status": "available",
+    "scaling": {
+        "MinCapacity": 0.5,
+        "MaxCapacity": 2.0
+    }
+}
+
+## OpenSearch
+{
+    "engine": "OpenSearch_2.17",
+    "instance": "t3.small.search",
+    "count": 1
+}
+
+## DynamoDB
+{
+    "name": "audit_events",
+    "billing": "PAY_PER_REQUEST",
+    "items": 0
+}
+
+## ECR
+[
+    "core-banking/audit-service",
+    "core-banking/ops-console",
+    "core-banking/transfer-service",
+    "core-banking/accounts-service"
+]
+
+## Tagged resources
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:launch-template/lt-00526c20a768b24a8
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-00e8caab992043a90
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/core-banking/transfer-service
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:nodegroup/core-banking-ledger/spot-<ACCOUNT_ID><ACCOUNT_ID>10/08d10e99-7b7e-aed6-85f0-ed24ba507245
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-06d5a678bb9e284d3
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-0ddf3dd7967ed9210
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-00e86dbe159f26c4a
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:vpc/vpc-0176792787c5dfd0c
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:access-entry/core-banking-ledger/user/<ACCOUNT_ID>/core-banking-ledger-deployer/12d10e99-2ebc-7408-d0b7-576e87705e0a
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:cluster/core-banking-ledger
+arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:cluster:core-banking-ledger
+arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:cluster:cluster-foedcolngcdcbuhqgdi2kz6boe
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-084d939044d1d2ebd
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0735ccf29f327f188
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:podidentityassociation/core-banking-ledger/a-6eldvqft7qg1aiutn
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/core-banking/accounts-service
+arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:subgrp:core-banking-ledger
+arn:aws:dynamodb:ap-southeast-2:<ACCOUNT_ID>:table/audit_events
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:network-acl/acl-0ed70ad9d0c082ec5
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-094632d2ef45fa65a
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0385cb970d7990201
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-064b4dc66d76a1166
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:vpc/vpc-06f1ab4df56e00372
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/core-banking/ops-console
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:addon/core-banking-ledger/coredns/ced10e9a-713a-85ad-9ae1-a070b2d061c8
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:addon/core-banking-ledger/vpc-cni/d6d10e9a-713f-056f-888a-88e22a04e534
+arn:aws:es:ap-southeast-2:<ACCOUNT_ID>:domain/core-banking-ledger
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-0840452e7d2549055
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:addon/core-banking-ledger/eks-pod-identity-agent/04d10e9a-713d-8c1d-f55b-18b5df82fd4d
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:internet-gateway/igw-020cc797d451ca65b
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/core-banking/audit-service
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:addon/core-banking-ledger/kube-proxy/6cd10e9a-713b-0d2a-60dc-29b68f478554
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:podidentityassociation/core-banking-ledger/a-tb5djjz7abm9ifcuz
+arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:db:core-banking-ledger-writer
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0922489d7322b7f41
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-09a6d5105677333a5
+
+## Argo CD applications
+NAME                    SYNC STATUS   HEALTH STATUS
+alert-webhook           Synced        Healthy
+core-banking            Synced        Healthy
+fluent-bit              Synced        Healthy
+kube-prometheus-stack   Synced        Healthy
+strimzi                 Synced        Healthy
+
+## Pods
+NAMESPACE      NAME                                                        READY   STATUS    RESTARTS   AGE
+argocd         argocd-application-controller-0                             1/1     Running   0          13m
+argocd         argocd-applicationset-controller-86bfbfd54c-5gwg8           1/1     Running   0          13m
+argocd         argocd-dex-server-86bd88bb45-w4qm6                          1/1     Running   0          13m
+argocd         argocd-notifications-controller-67cc46b754-4x2db            1/1     Running   0          13m
+argocd         argocd-redis-757f74dd67-p8975                               1/1     Running   0          13m
+argocd         argocd-repo-server-584c99df7d-4jgww                         1/1     Running   0          13m
+argocd         argocd-server-5496498b9-ns2b5                               1/1     Running   0          13m
+core-banking   accounts-service-5b9c6f59f9-v9t5x                           1/1     Running   0          2m57s
+core-banking   audit-service-dccd4b9c6-wgfnf                               1/1     Running   0          11m
+core-banking   ledger-dual-role-0                                          1/1     Running   0          11m
+core-banking   ops-console-7b68df6b64-rmfkl                                1/1     Running   0          5m54s
+core-banking   redis-5c7c66d5d5-pg8d6                                      1/1     Running   0          11m
+core-banking   transfer-service-6b9f88b6f6-2n4t8                           1/1     Running   0          11m
+kube-system    aws-node-d47jn                                              2/2     Running   0          18m
+kube-system    aws-node-mvsgn                                              2/2     Running   0          18m
+kube-system    coredns-77d89c6ff4-qlbvp                                    1/1     Running   0          23m
+kube-system    coredns-77d89c6ff4-qqgf8                                    1/1     Running   0          23m
+kube-system    eks-pod-identity-agent-8x27v                                1/1     Running   0          18m
+kube-system    eks-pod-identity-agent-hmkzl                                1/1     Running   0          18m
+kube-system    kube-proxy-4mdds                                            1/1     Running   0          19m
+kube-system    kube-proxy-b5fl4                                            1/1     Running   0          19m
+logging        fluent-bit-ffmts                                            1/1     Running   0          11m
+logging        fluent-bit-gmrg7                                            1/1     Running   0          11m
+monitoring     alert-webhook-ccf69c66d-qzxz8                               1/1     Running   0          11m
+monitoring     alertmanager-kps-alertmanager-0                             2/2     Running   0          11m
+monitoring     kps-operator-6d7f4bdfbd-rxbvm                               1/1     Running   0          11m
+monitoring     kube-prometheus-stack-grafana-5fc949db8-rl8mf               3/3     Running   0          11m
+monitoring     kube-prometheus-stack-kube-state-metrics-55cb9c8889-6bsww   1/1     Running   0          11m
+monitoring     prometheus-kps-prometheus-0                                 2/2     Running   0          11m
+strimzi        strimzi-cluster-operator-74b6d8849-fld9g                    1/1     Running   0          12m

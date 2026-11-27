@@ -1,0 +1,408 @@
+{
+    "Items": [
+        {
+            "transferId": {
+                "S": "0364104f-24ee-425a-b3cb-64a9c9563518"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:46:50.059897696Z#0364104f-24ee-425a-b3cb-64a9c9563518"
+            }
+        },
+        {
+            "transferId": {
+                "S": "c83ecb7d-a1db-4244-90cb-14ca15896635"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:48:35.928399553Z#c83ecb7d-a1db-4244-90cb-14ca15896635"
+            }
+        },
+        {
+            "transferId": {
+                "S": "70ac9708-c415-46e8-bfd0-75741fd49b6c"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:48:41.289633723Z#70ac9708-c415-46e8-bfd0-75741fd49b6c"
+            }
+        },
+        {
+            "transferId": {
+                "S": "9689932e-898d-4898-8afa-626b09a81be0"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:48:46.619819655Z#9689932e-898d-4898-8afa-626b09a81be0"
+            }
+        },
+        {
+            "transferId": {
+                "S": "eebc49f9-ae41-4694-a888-47e9d00198f4"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:48:52.037712732Z#eebc49f9-ae41-4694-a888-47e9d00198f4"
+            }
+        },
+        {
+            "transferId": {
+                "S": "cdd996f3-2f9a-48c1-b410-74e6c32743bc"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:48:57.234228149Z#cdd996f3-2f9a-48c1-b410-74e6c32743bc"
+            }
+        },
+        {
+            "transferId": {
+                "S": "92e65c6b-76e1-4e89-9cd1-f367c95dc7df"
+            },
+            "amount": {
+                "N": "1"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:02.622084209Z#92e65c6b-76e1-4e89-9cd1-f367c95dc7df"
+            }
+        },
+        {
+            "transferId": {
+                "S": "40d4cbee-6afb-4c68-ab6a-66c83b82e64f"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:20.523641619Z#40d4cbee-6afb-4c68-ab6a-66c83b82e64f"
+            }
+        },
+        {
+            "transferId": {
+                "S": "144c3220-1ff8-4958-8645-476617a87928"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:21.933001063Z#144c3220-1ff8-4958-8645-476617a87928"
+            }
+        },
+        {
+            "transferId": {
+                "S": "92ef492e-807f-4201-b20c-c65b53df0042"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:23.340238518Z#92ef492e-807f-4201-b20c-c65b53df0042"
+            }
+        },
+        {
+            "transferId": {
+                "S": "231362d1-dafd-4eb9-a98a-3380f1679dd1"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:24.979917751Z#231362d1-dafd-4eb9-a98a-3380f1679dd1"
+            }
+        },
+        {
+            "transferId": {
+                "S": "40a52991-78e3-438c-9010-9656a35443c2"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:26.383091123Z#40a52991-78e3-438c-9010-9656a35443c2"
+            }
+        },
+        {
+            "transferId": {
+                "S": "f1b00196-bdb4-45db-87ce-b0142f8a1df0"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:27.884630182Z#f1b00196-bdb4-45db-87ce-b0142f8a1df0"
+            }
+        },
+        {
+            "transferId": {
+                "S": "212a09d4-bb79-455c-9725-2188ac98f7f3"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:29.382096010Z#212a09d4-bb79-455c-9725-2188ac98f7f3"
+            }
+        },
+        {
+            "transferId": {
+                "S": "cd89f523-e693-4bd2-be01-cce840576a13"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:30.921214272Z#cd89f523-e693-4bd2-be01-cce840576a13"
+            }
+        },
+        {
+            "transferId": {
+                "S": "729a18ca-082b-48c6-8cba-1ded1a45ebf8"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:32.419178605Z#729a18ca-082b-48c6-8cba-1ded1a45ebf8"
+            }
+        },
+        {
+            "transferId": {
+                "S": "cf5f0c59-5e41-4357-8cc9-b0c8e01ad1f5"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:33.844147042Z#cf5f0c59-5e41-4357-8cc9-b0c8e01ad1f5"
+            }
+        },
+        {
+            "transferId": {
+                "S": "436708da-3a10-4f89-ae76-288c522e8078"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:35.341986739Z#436708da-3a10-4f89-ae76-288c522e8078"
+            }
+        },
+        {
+            "transferId": {
+                "S": "68f93bd0-295b-47d9-987f-ec8077e83c06"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:36.745688748Z#68f93bd0-295b-47d9-987f-ec8077e83c06"
+            }
+        },
+        {
+            "transferId": {
+                "S": "6aa2ad22-a20f-4680-8392-6ebdb457ea95"
+            },
+            "amount": {
+                "N": "100"
+            },
+            "PK": {
+                "S": "ACCOUNT#896f82e3-7339-43db-853c-73e33c6337c8"
+            },
+            "counterparty": {
+                "S": "1109ae26-ed88-4bc4-bb1e-b08417bf32ae"
+            },
+            "type": {
+                "S": "CREDIT"
+            },
+            "SK": {
+                "S": "TS#2026-11-27T13:49:38.199419795Z#6aa2ad22-a20f-4680-8392-6ebdb457ea95"
+            }
+        }
+    ],
+    "Count": 96,
+    "ScannedCount": 96,
+    "ConsumedCapacity": null,
+    "NextToken": "eyJFeGNsdXNpdmVTdGFydEtleSI6IG51bGwsICJib3RvX3RydW5jYXRlX2Ftb3VudCI6IDIwfQ=="
+}

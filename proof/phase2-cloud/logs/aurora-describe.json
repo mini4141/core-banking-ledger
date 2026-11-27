@@ -1,0 +1,91 @@
+{
+    "DBClusters": [
+        {
+            "AllocatedStorage": 1,
+            "AvailabilityZones": [
+                "ap-southeast-2a",
+                "ap-southeast-2b",
+                "ap-southeast-2c"
+            ],
+            "BackupRetentionPeriod": 1,
+            "DatabaseName": "accounts",
+            "DBClusterIdentifier": "core-banking-ledger",
+            "DBClusterParameterGroup": "default.aurora-mysql8.0",
+            "DBSubnetGroup": "core-banking-ledger",
+            "Status": "available",
+            "EarliestRestorableTime": "2026-11-27T13:20:46.011000+00:00",
+            "Endpoint": "core-banking-ledger.cluster-cvwcmoea0n62.ap-southeast-2.rds.amazonaws.com",
+            "ReaderEndpoint": "core-banking-ledger.cluster-ro-cvwcmoea0n62.ap-southeast-2.rds.amazonaws.com",
+            "MultiAZ": false,
+            "Engine": "aurora-mysql",
+            "EngineVersion": "8.0.mysql_aurora.3.12.0",
+            "LatestRestorableTime": "2026-11-27T13:48:38.045000+00:00",
+            "Port": 3306,
+            "MasterUsername": "ledger",
+            "PreferredBackupWindow": "12:06-12:36",
+            "PreferredMaintenanceWindow": "wed:16:55-wed:17:25",
+            "UpgradeRolloutOrder": "second",
+            "ReadReplicaIdentifiers": [],
+            "DBClusterMembers": [
+                {
+                    "DBInstanceIdentifier": "core-banking-ledger-writer",
+                    "IsClusterWriter": true,
+                    "DBClusterParameterGroupStatus": "in-sync",
+                    "PromotionTier": 0
+                }
+            ],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-0ddf3dd7967ed9210",
+                    "Status": "active"
+                }
+            ],
+            "HostedZoneId": "Z32T0VRHXEXS0V",
+            "StorageEncrypted": true,
+            "StorageEncryptionType": "sse-kms",
+            "KmsKeyId": "arn:aws:kms:ap-southeast-2:<ACCOUNT_ID>:key/159e9d5f-e9e5-48ce-8935-e7d95b4805bf",
+            "DbClusterResourceId": "cluster-FOEDCOLNGCDCBUHQGDI2KZ6BOE",
+            "DBClusterArn": "arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:cluster:core-banking-ledger",
+            "AssociatedRoles": [],
+            "IAMDatabaseAuthenticationEnabled": false,
+            "ClusterCreateTime": "2026-11-27T13:20:28.668000+00:00",
+            "EngineMode": "provisioned",
+            "AutoMinorVersionUpgrade": true,
+            "DeletionProtection": false,
+            "HttpEndpointEnabled": false,
+            "ActivityStreamStatus": "stopped",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DomainMemberships": [],
+            "TagList": [
+                {
+                    "Key": "Project",
+                    "Value": "core-banking-ledger"
+                },
+                {
+                    "Key": "Owner",
+                    "Value": "alvieirvansyah"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Ephemeral",
+                    "Value": "true"
+                }
+            ],
+            "NetworkType": "IPV4",
+            "ServerlessV2ScalingConfiguration": {
+                "MinCapacity": 0.5,
+                "MaxCapacity": 2.0
+            },
+            "ServerlessV2PlatformVersion": "4",
+            "DatabaseInsightsMode": "standard",
+            "LocalWriteForwardingStatus": "disabled",
+            "EngineLifecycleSupport": "open-source-rds-extended-support",
+            "VPCNetworkingEnabled": true,
+            "InternetAccessGatewayEnabled": false
+        }
+    ]
+}
