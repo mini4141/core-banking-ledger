@@ -8,6 +8,9 @@ server {
   location / { try_files $uri /index.html; }
   location /healthz { return 200 'ok'; add_header Content-Type text/plain; }
 
+  # internal service-to-service legs must never be reachable from the browser
+  location /api/accounts/internal/ { return 404; }
+
   location /api/accounts/ {
     set $upstream ${ACCOUNTS_URL};
     rewrite ^/api/accounts/(.*)$ /$1 break;

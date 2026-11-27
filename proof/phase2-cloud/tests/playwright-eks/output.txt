@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+  x  1 e2e\transfer.spec.js:2:1 › operator opens two accounts, deposits and transfers money (10.7s)
+
+
+  1) e2e\transfer.spec.js:2:1 › operator opens two accounts, deposits and transfers money ──────────
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  getByTestId('account-Alice-883292')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByTestId('account-Alice-883292')[22m
+
+
+      10 |     await page.getByLabel('Customer name').fill(name)
+      11 |     await page.getByRole('button', { name: 'Open account' }).click()
+    > 12 |     await expect(page.getByTestId(`account-${name}`)).toBeVisible()
+         |                                                       ^
+      13 |   }
+      14 |   await page.getByLabel(`Deposit amount for ${alice}`).fill('50000')
+      15 |   await page.getByTestId(`account-${alice}`).getByRole('button', { name: 'Deposit' }).click()
+        at C:\Users\ThinkPad\Pictures\mmvie-v2\reqs\13-core-banking-ledger\ops-console\e2e\transfer.spec.js:12:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\transfer-operator-opens-tw-9aee1-eposits-and-transfers-money\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\transfer-operator-opens-tw-9aee1-eposits-and-transfers-money\error-context.md
+
+  1 failed
+    e2e\transfer.spec.js:2:1 › operator opens two accounts, deposits and transfers money ───────────
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

@@ -31,9 +31,9 @@ spec:
           image: {{ include "cb.image" (dict "root" . "name" .Values.console.image) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - { name: ACCOUNTS_URL, value: "http://accounts-service:8081" }
-            - { name: TRANSFER_URL, value: "http://transfer-service:8082" }
-            - { name: AUDIT_URL, value: "http://audit-service:8083" }
+            - { name: ACCOUNTS_URL, value: "http://accounts-service.{{ .Release.Namespace }}.svc.cluster.local:8081" }
+            - { name: TRANSFER_URL, value: "http://transfer-service.{{ .Release.Namespace }}.svc.cluster.local:8082" }
+            - { name: AUDIT_URL, value: "http://audit-service.{{ .Release.Namespace }}.svc.cluster.local:8083" }
           ports:
             - { name: http, containerPort: 80 }
           readinessProbe:

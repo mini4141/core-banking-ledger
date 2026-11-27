@@ -1,0 +1,4 @@
+{"status":"UP","groups":["liveness","readiness"]} <- http://localhost:18081
+{"status":"UP","groups":["liveness","readiness"]} <- http://localhost:18082
+{"status":"UP","groups":["liveness","readiness"]} <- http://localhost:18083
+ok

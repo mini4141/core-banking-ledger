@@ -20,3 +20,4 @@ One line each: date, decision, reason.
 - 2026-11-27 Pods set enableServiceLinks=false: Kubernetes service-link env vars (REDIS_PORT=tcp://...) broke Spring property binding.
 - 2026-11-27 kube-prometheus-stack Alertmanager config sets routes: [] — the chart's default sub-route names a 'null' receiver that a replaced config no longer defines.
 - 2026-11-27 CI pinned to ubuntu-24.04: ubuntu-latest is 26.04 and Playwright 1.55 does not support it.
+- 2026-11-27 ops-console nginx gets fully qualified service names in Kubernetes: nginx's resolver ignores the pod's DNS search domains, so short names fail to resolve.

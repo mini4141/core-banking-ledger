@@ -10,7 +10,7 @@ variable "aws_profile" {
 
 variable "kubernetes_version" {
   type    = string
-  default = "1.33"
+  default = "1.34"
 }
 
 variable "aurora_engine_version" {
